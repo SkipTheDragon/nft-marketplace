@@ -1,0 +1,31 @@
+# https://docs.lando.dev/plugins/symfony/config.html
+
+name: nft-marketplace
+recipe: symfony
+config:
+  webroot: ./public
+  php: '8.2'
+  via: nginx
+  cache: memcached
+  xdebug: false
+  database: postgres
+services:
+  appserver:
+    run:
+      - composer install
+  database:
+    portforward: 5432
+  node:
+    type: node:18
+    run:
+      - yarn
+      - yarn build
+tooling:
+  node:
+    service: node
+  yarn:
+    service: node
+  symfony:
+    service: appserver
+    description: Shortcut for php bin/console
+    cmd: php bin/console
