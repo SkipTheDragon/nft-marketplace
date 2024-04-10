@@ -22,20 +22,8 @@
             "ref": "b131e6cbfe1b898a508987851963fff485986285"
         }
     },
-    "symfony/asset-mapper": {
-        "version": "7.0",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "main",
-            "version": "6.4",
-            "ref": "6c28c471640cc2c6e60812ebcb961c526ef8997f"
-        },
-        "files": [
-            "assets/app.js",
-            "assets/styles/app.css",
-            "config/packages/asset_mapper.yaml",
-            "importmap.php"
-        ]
+    "skipthedragon/inertia-bundle": {
+        "version": "dev-master"
     },
     "symfony/console": {
         "version": "7.0",
@@ -78,6 +66,18 @@
             "public/index.php",
             "src/Controller/.gitignore",
             "src/Kernel.php"
+        ]
+    },
+    "symfony/mailer": {
+        "version": "7.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "4.3",
+            "ref": "df66ee1f226c46f01e85c29c2f7acce0596ba35a"
+        },
+        "files": [
+            "config/packages/mailer.yaml"
         ]
     },
     "symfony/maker-bundle": {
@@ -124,9 +124,9 @@
             "ref": "6acd9ff4f7fd5626d2962109bd4ebab351d43c43"
         },
         "files": [
-            "assets/bootstrap.js",
+            "assets/bootstrap.ts",
             "assets/controllers.json",
-            "assets/controllers/hello_controller.js"
+            "assets/controllers/hello_controller.tsx"
         ]
     },
     "symfony/translation": {
@@ -173,8 +173,11 @@
             "ref": "e970076b31d602ae6e2106cf91a82c7e1f7ddff2"
         },
         "files": [
-            "assets/react/controllers/Hello.jsx"
+            "assets/react/controllers/Hello.tsx"
         ]
+    },
+    "symfony/ux-turbo": {
+        "version": "v2.16.0"
     },
     "symfony/validator": {
         "version": "7.0",
@@ -187,5 +190,40 @@
         "files": [
             "config/packages/validator.yaml"
         ]
+    },
+    "symfony/web-profiler-bundle": {
+        "version": "7.0",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "6.1",
+            "ref": "e42b3f0177df239add25373083a564e5ead4e13a"
+        },
+        "files": [
+            "config/packages/web_profiler.yaml",
+            "config/routes/web_profiler.yaml"
+        ]
+    },
+    "symfony/webpack-encore-bundle": {
+        "version": "2.1",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.0",
+            "ref": "082d754b3bd54b3fc669f278f1eea955cfd23cf5"
+        },
+        "files": [
+            "assets/app.tsx",
+            "assets/styles/app.css",
+            "config/packages/webpack_encore.yaml",
+            "package.json",
+            "webpack.config.js"
+        ]
+    },
+    "symfonycasts/verify-email-bundle": {
+        "version": "v1.17.0"
+    },
+    "twig/extra-bundle": {
+        "version": "v3.8.0"
     }
 }

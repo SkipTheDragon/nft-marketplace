@@ -19,9 +19,10 @@ services:
     type: node:18
     run:
       - yarn
-      - yarn build
 tooling:
   node:
+    service: node
+  npx:
     service: node
   yarn:
     service: node

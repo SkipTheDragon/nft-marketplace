@@ -1,6 +1,8 @@
 twig:
     file_name_pattern: '*.twig'
-
+    globals:
+        front_end_settings:
+            THIRDWEB_CLIENT: '%env(THIRDWEB_CLIENT)%'
 when@test:
     twig:
         strict_variables: true
