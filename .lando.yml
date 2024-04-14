@@ -9,23 +9,33 @@ config:
   cache: memcached
   xdebug: false
   database: postgres
+  config:
+    php: .lando/php.ini
+
 services:
   appserver:
+    scanner: false
+    ports:
+      - 5173:5173
     run:
       - composer install
+    build_as_root:
+      - apt-get update -y
+      - apt-get install -y libgmp-dev
+      - docker-php-ext-install gmp
+      - docker-php-ext-enable gmp
+      - curl -sL https://deb.nodesource.com/setup_20.x | bash -
+      - apt-get install -y nodejs
+      - npm install yarn -g
   database:
     portforward: 5432
-  node:
-    type: node:18
-    run:
-      - yarn
 tooling:
   node:
-    service: node
+    service: appserver
   npx:
-    service: node
+    service: appserver
   yarn:
-    service: node
+    service: appserver
   symfony:
     service: appserver
     description: Shortcut for php bin/console

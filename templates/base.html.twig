@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
     <head>
         <meta charset="UTF-8">
         <title>{% block title %}Welcome!{% endblock %}</title>
@@ -10,12 +11,14 @@
         </script>
 
         {% block stylesheets %}
-            {{ encore_entry_link_tags('app') }}
+            {{ vite_entry_link_tags('app') }}
         {% endblock %}
 
         {% block javascripts %}
+            {{ vite_entry_script_tags('app', {
+                dependency: 'react'
+            }) }}
             {{ inertiaHead(page) }}
-            {{ encore_entry_script_tags('app') }}
         {% endblock %}
     </head>
     <body>
