@@ -2,19 +2,17 @@
 
 namespace App\Controller;
 
-use App\Repository\AccountRepository;
 use App\Security\EmailVerifier;
-use App\Service\SIWEService;
+use App\Service\SIWE\CryptoAuthService;
+use App\Service\SIWE\MessageSessionService;
 use App\TransferObject\ConnectDto;
 use Rompetomp\InertiaBundle\Architecture\InertiaTrait;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\AsController;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Contracts\Translation\TranslatorInterface;
 
 #[Route('/auth', name: 'app_auth_')]
 #[AsController]
@@ -23,7 +21,6 @@ class AuthController {
 
     public function __construct(
         private readonly EmailVerifier $emailVerifier,
-        private readonly SIWEService $siwe
     )
     {
     }
@@ -38,10 +35,11 @@ class AuthController {
     public function connectPost(
         #[MapRequestPayload]
         ConnectDto $connectDto,
+        CryptoAuthService $siwe
     ): Response
     {
         try {
-            $this->siwe->handleConnect($connectDto);
+            $siwe->handleConnect($connectDto);
             return new JsonResponse([
                 'message' => 'You are now connected.'
             ]);
@@ -55,12 +53,13 @@ class AuthController {
     #[Route('/connect/message', name: 'message_to_sign', methods: ['GET'])]
     public function connectMessage(
         Request $request,
+        MessageSessionService $messageSessionService
     ): Response
     {
-        $this->siwe->storeTemporaryMessage($request->query->get('address'), $request->query->get('chainId'));
+        $messageSessionService->storeTemporaryMessage($request->query->get('address'), $request->query->get('chainId'));
 
         return new JsonResponse([
-            'message' => $this->siwe->getTemporaryMessage()
+            'message' => $messageSessionService->getTemporaryMessage()
         ]);
     }
 
@@ -79,29 +78,8 @@ class AuthController {
     }
 
     #[Route('/disconnect/confirmed', name: 'disconnect')]
-    public function disconnect(Request $request): void
+    public function disconnect(): void
     {
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
-    }
-
-    #[Route('/verify/email', name: 'verify_email')]
-    public function verifyAccountEmail(Request $request, TranslatorInterface $translator, AccountRepository $accountRepository): Response
-    {
-        $id = $request->query->get('id');
-
-        if (null === $id) {
-            return new RedirectResponse('connect');
-        }
-
-        $account = $accountRepository->find($id);
-
-        if (null === $account) {
-            return new RedirectResponse('connect');
-        }
-
-        // validate email confirmation link, sets Account::isVerified=true and persists
-        $this->emailVerifier->handleEmailConfirmation($request, $account);
-
-        return new RedirectResponse('home');
     }
 }
