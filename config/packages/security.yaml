@@ -10,8 +10,8 @@ security:
         users_in_memory: { memory: null }
         app_user_provider:
             entity:
-                class: App\Entity\UserWallet
-                property: address
+                class: App\Entity\Account
+                property: username
 
     firewalls:
         dev:

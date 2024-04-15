@@ -44,11 +44,7 @@ class SIWEAuthenticator extends AbstractAuthenticator
 
         $accountIdentifier = $this->entityManager->getRepository(AccountSession::class)->findOneBy(['token' => $token]);
 
-        if (!$accountIdentifier->getAccount()->isActive()) {
-            throw new CustomUserMessageAuthenticationException('Account is not active!');
-        }
-
-        return new SelfValidatingPassport(new UserBadge($accountIdentifier));
+        return new SelfValidatingPassport(new UserBadge($accountIdentifier->getAccount()->getUserIdentifier()));
     }
 
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
