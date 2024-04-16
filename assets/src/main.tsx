@@ -8,6 +8,6 @@ createInertiaApp({
         return pages[`./controllers/${name}.tsx`];
     },
     setup({ el, App, props }) {
-        createRoot(el).render(<Wrapper><App {...props}/></Wrapper>)
+        createRoot(el).render(<Wrapper isUserConnected={props.initialPage.props.auth.user !== null}><App {...props}/></Wrapper>)
     },
 })

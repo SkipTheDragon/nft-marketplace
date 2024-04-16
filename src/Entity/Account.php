@@ -8,6 +8,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Ignore;
 
 #[ORM\Entity(repositoryClass: AccountRepository::class)]
 #[ORM\Table(name: '`account`')]
@@ -43,7 +44,7 @@ class Account implements UserInterface
     /**
      * @var Collection<int, AccountWallet>
      */
-    #[ORM\OneToMany(targetEntity: AccountWallet::class, mappedBy: 'owner', orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: AccountWallet::class, mappedBy: 'account', orphanRemoval: true)]
     private Collection $wallets;
 
     /**
@@ -88,6 +89,7 @@ class Account implements UserInterface
         return $this;
     }
 
+    #[Ignore]
     public function getPassword(): ?string
     {
         return $this->password;
@@ -100,6 +102,7 @@ class Account implements UserInterface
         return $this;
     }
 
+    #[Ignore]
     public function getRegisteredAt(): ?\DateTimeImmutable
     {
         return $this->registeredAt;
@@ -146,6 +149,7 @@ class Account implements UserInterface
     public function eraseCredentials(): void
     {}
 
+    #[Ignore]
     public function getUserIdentifier(): string
     {
         return (string) $this->username;
@@ -166,6 +170,7 @@ class Account implements UserInterface
     /**
      * @return Collection<int, AccountWallet>
      */
+    #[Ignore]
     public function getWallets(): Collection
     {
         return $this->wallets;
@@ -196,6 +201,7 @@ class Account implements UserInterface
     /**
      * @return Collection<int, AccountSession>
      */
+    #[Ignore]
     public function getSessions(): Collection
     {
         return $this->sessions;

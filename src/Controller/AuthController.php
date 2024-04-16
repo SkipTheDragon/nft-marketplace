@@ -50,7 +50,7 @@ class AuthController {
         }
     }
 
-    #[Route('/connect/message', name: 'message_to_sign', methods: ['GET'])]
+    #[Route('/connect/message', name: 'message_to_sign', methods: ['GET'], format: 'json')]
     public function connectMessage(
         Request $request,
         MessageSessionService $messageSessionService
@@ -66,13 +66,13 @@ class AuthController {
     #[Route('/onboarding', name: 'onboarding')]
     public function onboarding(Request $request): Response
     {
-        return $this->inertia->render('auth/SignIn', []);
+        return $this->inertia->render('auth/Connect', []);
     }
 
     #[Route('/disconnect', name: 'disconnect_confirmation')]
     public function disconnectConfirmation(): Response
     {
-        return $this->inertia->render('auth/SignOut', [
+        return $this->inertia->render('auth/Disconnect', [
             'props' => [],
         ]);
     }

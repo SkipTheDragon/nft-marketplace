@@ -21,7 +21,7 @@
     "noFallthroughCasesInSwitch": true
   },
   "include": [
-    "nft-marketplace/src"
+    "assets/src"
   ],
   "references": [{ "path": "./tsconfig.node.json"}]
 }
