@@ -119,4 +119,12 @@ class AccountSession
 
         return $this;
     }
+
+    public function __toString(): string
+    {
+        return 'Session ' . $this->id . ' for ' . $this->account->getUsername() . ' started at ' .
+            $this->startedAt->format('Y-m-d H:i:s') . ' and last activity at ' .
+            $this->lastActivityAt->format('Y-m-d H:i:s') . ' from ' . $this->browser . ' on ' .
+            $this->os . ' with token ------redacted-----.';
+    }
 }

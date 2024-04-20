@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Architecture\EAccountWallet;
 use App\Repository\AccountWalletRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccountWalletRepository::class)]
@@ -23,6 +25,17 @@ class AccountWallet
     #[ORM\ManyToOne(inversedBy: 'wallets')]
     #[ORM\JoinColumn('account_data',nullable: false)]
     private ?Account $account = null;
+
+    /**
+     * @var Collection<int, NFT>
+     */
+    #[ORM\ManyToMany(targetEntity: NFT::class, mappedBy: 'owner')]
+    private Collection $nfts;
+
+    public function __construct()
+    {
+        $this->nfts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -63,5 +76,37 @@ class AccountWallet
         $this->account = $account;
 
         return $this;
+    }
+
+    /**
+     * @return Collection<int, NFT>
+     */
+    public function getNfts(): Collection
+    {
+        return $this->nfts;
+    }
+
+    public function addNft(NFT $nft): static
+    {
+        if (!$this->nfts->contains($nft)) {
+            $this->nfts->add($nft);
+            $nft->addOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function removeNft(NFT $nft): static
+    {
+        if ($this->nfts->removeElement($nft)) {
+            $nft->removeOwner($this);
+        }
+
+        return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->address;
     }
 }
