@@ -2,9 +2,8 @@ import type {Wallet} from "thirdweb/src/wallets/interfaces/wallet";
 import axios from "axios";
 import Routing from "fos-router";
 import toast from "react-hot-toast";
-import {router} from "@inertiajs/react";
 
-export async function onConnect(t: Wallet, setAwaitSign: (awaitSign: boolean) => void) {
+export async function onConnect(t: Wallet, setAwaitSign: (awaitSign: boolean) => void, setJustConnected: () => void){
     // Get the nonce and sign the message:123
     const account = t.getAccount();
     const chain = t.getChain();
@@ -12,6 +11,8 @@ export async function onConnect(t: Wallet, setAwaitSign: (awaitSign: boolean) =>
     if (!account || !chain) {
         return;
     }
+
+    setJustConnected();
 
     /**
      * @see src/TransferObject/ConnectDto.php
@@ -46,7 +47,8 @@ export async function onConnect(t: Wallet, setAwaitSign: (awaitSign: boolean) =>
             toast.error("Failed to connect!");
             t.disconnect();
             setTimeout(() => window.location.reload(), 1000)
-        }).finally(() => {
-        setAwaitSign(false);
-    })
+        })
+        .finally(() => {
+            setAwaitSign(false);
+        })
 }

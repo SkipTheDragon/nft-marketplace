@@ -93,20 +93,21 @@ readonly class CryptoAuthService
 
             // Check if the wallet is already registered.
             $existingWallet = $this->entityManager->getRepository(AccountWallet::class)->findOneBy(['address' => $connectDto->address]);
+
             // Register a new wallet + account if it doesn't exist.
             if ($existingWallet === null) {
+                $tempAccount = (new Account())->setUsername($connectDto->address);
                 $existingWallet = (new AccountWallet())
                     ->setAddress($connectDto->address)
                     ->setType($connectDto->type)
-                    ->setAccount($account);
-                $this->entityManager->persist((new Account())->setUsername($connectDto->address));
+                    ->setAccount($tempAccount);
+                $this->entityManager->persist($tempAccount);
                 $this->entityManager->persist($existingWallet);
 
                 // Flushing the entity when starting a new session.
             }
 
             $account = $existingWallet->getAccount();
-
             // If the account is already registered, we just need to start a new session.
             $this->startNewSession($account);
         } else {

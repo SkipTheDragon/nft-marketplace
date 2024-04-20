@@ -1,6 +1,6 @@
 <?php
 
-namespace App\EventListener;
+namespace App\EventListener\InertiaProviders;
 
 use Rompetomp\InertiaBundle\Architecture\InertiaInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -8,7 +8,10 @@ use Symfony\Component\EventDispatcher\Attribute\AsEventListener;
 use Symfony\Component\HttpKernel\Event\ControllerEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 
-final readonly class InertiaGlobalListener
+/**
+ * Provides the user data to the Inertia.js frontend.
+ */
+final readonly class AuthInertiaListener
 {
     public function __construct(
         private InertiaInterface $inertia,
@@ -20,7 +23,7 @@ final readonly class InertiaGlobalListener
     #[AsEventListener(event: KernelEvents::CONTROLLER)]
     public function onKernelController(ControllerEvent $event): void
     {
-        $this->inertia->share('auth', [
+        $this->inertia->share('GLOBALS::AUTH', [
             'user' => $this->security->getUser() ?? null,
         ]);
     }

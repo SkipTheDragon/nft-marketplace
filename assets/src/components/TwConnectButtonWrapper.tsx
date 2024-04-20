@@ -3,22 +3,23 @@ import type {Wallet} from "thirdweb/src/wallets/interfaces/wallet";
 import {ConnectButton, ConnectEmbed, useActiveWallet} from "thirdweb/react";
 import {onConnect} from "../utils/auth/onConnect.ts";
 import {createWallet, inAppWallet} from "thirdweb/wallets";
-import {FaPowerOff} from "react-icons/fa6";
 import {Button, Dialog, DialogBody, DialogFooter, DialogHeader, Tooltip} from "@material-tailwind/react";
 import {useEffect, useState} from "react";
+import {GlobalStoreState, useGlobalStore} from "../stores/useGlobalStore.ts";
 
 export default function TwConnectButtonWrapper(
     {
         type = 'button'
-    }:
-        {
-            type?: 'button' | 'embed'
-        }
+    } :
+    {
+        type?: 'button' | 'embed'
+    }
 ) {
     const [awaitSign, setAwaitSign] = useState(false);
     const [tryAgain, setTryAgain] = useState(false);
     const [secondsCooldown, setCooldown] = useState(3000);
     const wallet = useActiveWallet();
+    const setJustConnected = useGlobalStore((state: GlobalStoreState) => state.setJustConnected);
 
     const wallets: Wallet[] = [
         createWallet("io.metamask"),
@@ -37,6 +38,9 @@ export default function TwConnectButtonWrapper(
         }),
     ];
 
+    /**
+     * Add a cooldown to the 'Try again' button
+     */
     useEffect(() => {
         if (awaitSign) {
             const interval = setInterval(() => {
@@ -54,6 +58,9 @@ export default function TwConnectButtonWrapper(
 
     }, [tryAgain, awaitSign, secondsCooldown])
 
+    /**
+     *  Dialog to show when the user is awaiting signature
+     */
     const dialog = (
         <Dialog size="xs" open={awaitSign}>
             <DialogHeader>
@@ -65,7 +72,7 @@ export default function TwConnectButtonWrapper(
             </DialogBody>
             <DialogFooter>
                 <Button variant="gradient" disabled={!tryAgain} onClick={() => {
-                    onConnect(wallet, setAwaitSign);
+                    onConnect(wallet, setAwaitSign, setJustConnected);
                     setCooldown(3000 + 2000);
                 }}>
                     Try again {secondsCooldown > 0 && <>({secondsCooldown / 1000} seconds)</>}
@@ -100,7 +107,7 @@ export default function TwConnectButtonWrapper(
                         privacyPolicyUrl:
                             "http://nft-marketplace.lndo.site/auth/sign-in",
                     }}
-                    onConnect={(e) => onConnect(e, setAwaitSign)}
+                    onConnect={(e) => onConnect(e, setAwaitSign, setJustConnected)}
                     onDisconnect={() => {
                         console.log('out')
                     }}
@@ -136,7 +143,7 @@ export default function TwConnectButtonWrapper(
                     privacyPolicyUrl:
                         "http://nft-marketplace.lndo.site/auth/sign-in",
                 }}
-                onConnect={(e) => onConnect(e, setAwaitSign)}
+                onConnect={(e) => onConnect(e, setAwaitSign, setJustConnected)}
                 showThirdwebBranding={false}
             />
             {dialog}

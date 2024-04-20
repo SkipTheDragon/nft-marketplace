@@ -38,16 +38,16 @@ class AuthController {
         CryptoAuthService $siwe
     ): Response
     {
-        try {
+//        try {
             $siwe->handleConnect($connectDto);
             return new JsonResponse([
                 'message' => 'You are now connected.'
             ]);
-        } catch (\Exception $e) {
-            return new JsonResponse([
-                'message' => 'Something went wrong, we could not connect you. Please try again.'
-            ], Response::HTTP_BAD_REQUEST);
-        }
+//        } catch (\Exception $e) {
+//            return new JsonResponse([
+//                'message' => 'Something went wrong, we could not connect you. Please try again.'
+//            ], Response::HTTP_BAD_REQUEST);
+//        }
     }
 
     #[Route('/connect/message', name: 'message_to_sign', methods: ['GET'], format: 'json')]
