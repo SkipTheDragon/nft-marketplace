@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Architecture\EBlockchainType;
 use App\Repository\BlockchainRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -18,10 +19,7 @@ class Blockchain
     #[ORM\Column(length: 255)]
     private ?string $name = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $rpc = null;
-
-    #[ORM\Column]
+    #[ORM\Column(unique: true)]
     private ?int $chainId = null;
 
     #[ORM\Column(length: 255)]
@@ -39,6 +37,18 @@ class Blockchain
     #[ORM\OneToMany(targetEntity: NFT::class, mappedBy: 'blockchain', orphanRemoval: true)]
     private Collection $nfts;
 
+    /**
+     * @var Collection<int, RpcProvider>
+     */
+    #[ORM\OneToMany(targetEntity: RpcProvider::class, mappedBy: 'blockchain')]
+    private Collection $rpcProviders;
+
+    public function __construct()
+    {
+        $this->rpcProviders = new ArrayCollection();
+        $this->nfts = new ArrayCollection();
+    }
+
     public function getId(): ?int
     {
         return $this->id;
@@ -52,18 +62,6 @@ class Blockchain
     public function setName(string $name): static
     {
         $this->name = $name;
-
-        return $this;
-    }
-
-    public function getRpc(): ?string
-    {
-        return $this->rpc;
-    }
-
-    public function setRpc(string $rpc): static
-    {
-        $this->rpc = $rpc;
 
         return $this;
     }
@@ -127,5 +125,35 @@ class Blockchain
     public function __toString(): string
     {
         return $this->name;
+    }
+
+    /**
+     * @return Collection<int, RpcProvider>
+     */
+    public function getRpcProviders(): Collection
+    {
+        return $this->rpcProviders;
+    }
+
+    public function addRpcProvider(RpcProvider $rpcProvider): static
+    {
+        if (!$this->rpcProviders->contains($rpcProvider)) {
+            $this->rpcProviders->add($rpcProvider);
+            $rpcProvider->setBlockchain($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRpcProvider(RpcProvider $rpcProvider): static
+    {
+        if ($this->rpcProviders->removeElement($rpcProvider)) {
+            // set the owning side to null (unless already changed)
+            if ($rpcProvider->getBlockchain() === $this) {
+                $rpcProvider->setBlockchain(null);
+            }
+        }
+
+        return $this;
     }
 }

@@ -124,9 +124,6 @@ export default function TwConnectButtonWrapper(
                 client={thirdwebClient}
                 wallets={wallets}
                 theme={"light"}
-                detailsModal={{
-                    hideDisconnect: true,
-                }}
                 connectButton={{
                     label: "Connect Wallet",
                 }}

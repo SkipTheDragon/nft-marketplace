@@ -9,6 +9,10 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\Actions;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Filters;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
+use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class NFTCrudController extends AbstractCrudController
 {
@@ -22,10 +26,12 @@ class NFTCrudController extends AbstractCrudController
     public function configureFilters(Filters $filters) : Filters
     {
         return $filters
-            ->add('name')
-            ->add('description')
+            ->add('id')
+            ->add('address')
+            ->add('tokenId')
             ->add('blockchain')
-            ->add('importedOn');
+            ->add('isImported');
+
     }
 
     public static function getEntityFqcn(): string
@@ -40,14 +46,16 @@ class NFTCrudController extends AbstractCrudController
         return $actions;
     }
 
-    /*
+
     public function configureFields(string $pageName): iterable
     {
         return [
             IdField::new('id'),
-            TextField::new('title'),
-            TextEditorField::new('description'),
+            TextField::new('address'),
+            TextField::new('tokenId'),
+            AssociationField::new('blockchain'),
+            BooleanField::new('isImported')->setDisabled(),
         ];
     }
-    */
+
 }

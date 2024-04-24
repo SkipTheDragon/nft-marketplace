@@ -7,7 +7,7 @@ namespace App\Architecture;
  */
 enum EContractType: string
 {
-    case MARKETPLACE = 'marketplace';
-    case COLLECTION = 'collection';
-    case EDITION = 'edition';
+    case MARKETPLACE = 'MARKETPLACE';
+    case NFT_COLLECTION = 'ERC721';
+    case NFT_EDITION = 'ERC1155';
 }

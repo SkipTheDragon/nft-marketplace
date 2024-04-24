@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20240420224727 extends AbstractMigration
+final class Version20240424205444 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -20,13 +20,13 @@ final class Version20240420224727 extends AbstractMigration
     public function up(Schema $schema): void
     {
         // this up() migration is auto-generated, please modify it to your needs
-        $this->addSql('ALTER TABLE blockchain ALTER icon DROP NOT NULL');
+        $this->addSql('ALTER TABLE nft ADD is_imported BOOLEAN NOT NULL');
     }
 
     public function down(Schema $schema): void
     {
         // this down() migration is auto-generated, please modify it to your needs
         $this->addSql('CREATE SCHEMA public');
-        $this->addSql('ALTER TABLE blockchain ALTER icon SET NOT NULL');
+        $this->addSql('ALTER TABLE nft DROP is_imported');
     }
 }

@@ -44,6 +44,14 @@ class SIWEAuthenticator extends AbstractAuthenticator
 
         $accountIdentifier = $this->entityManager->getRepository(AccountSession::class)->findOneBy(['token' => $token]);
 
+        /**
+         * If the token is invalid, remove it from the session and throw an exception.
+         */
+        if ($accountIdentifier === null) {
+            $request->getSession()->remove('X-AUTH-TOKEN');
+            throw new CustomUserMessageAuthenticationException('Invalid token.');
+        }
+
         return new SelfValidatingPassport(new UserBadge($accountIdentifier->getAccount()->getUserIdentifier()));
     }
 

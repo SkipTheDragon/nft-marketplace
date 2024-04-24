@@ -17,14 +17,14 @@ class NFT
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $name = null;
 
     #[ORM\ManyToOne(targetEntity: Blockchain::class, inversedBy: 'nfts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Blockchain $blockchain = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     /**
@@ -36,8 +36,14 @@ class NFT
     #[ORM\Column(length: 255)]
     private ?ENFTTypes $type = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $importedOn = null;
+    #[ORM\Column]
+    private ?bool $isImported = false;
+
+    #[ORM\Column(length: 255)]
+    private ?string $address = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $tokenId = null;
 
     public function __construct()
     {
@@ -121,20 +127,44 @@ class NFT
         return $this;
     }
 
-    public function getImportedOn(): ?\DateTimeInterface
+    public function __toString(): string
     {
-        return $this->importedOn;
+        return $this->name;
     }
 
-    public function setImportedOn(\DateTimeInterface $importedOn): static
+    public function isImported(): ?bool
     {
-        $this->importedOn = $importedOn;
+        return $this->isImported;
+    }
+
+    public function setImported(bool $isImported): static
+    {
+        $this->isImported = $isImported;
 
         return $this;
     }
 
-    public function __toString(): string
+    public function getAddress(): ?string
     {
-        return $this->name;
+        return $this->address;
+    }
+
+    public function setAddress(string $address): static
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    public function getTokenId(): ?string
+    {
+        return $this->tokenId;
+    }
+
+    public function setTokenId(string $tokenId): static
+    {
+        $this->tokenId = $tokenId;
+
+        return $this;
     }
 }

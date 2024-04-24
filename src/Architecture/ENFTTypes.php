@@ -7,6 +7,15 @@ namespace App\Architecture;
  */
 enum ENFTTypes: string
 {
-    case COLLECTION = EContractType::COLLECTION->value;
-    case EDITION = EContractType::EDITION->value;
+    case COLLECTION = EContractType::NFT_COLLECTION->value;
+    case EDITION = EContractType::NFT_EDITION->value;
+
+    public static function fromValue(mixed $contractType): ENFTTypes
+    {
+        return match ($contractType) {
+            EContractType::NFT_COLLECTION->value => self::COLLECTION,
+            EContractType::NFT_EDITION->value => self::EDITION,
+            default => throw new \InvalidArgumentException('Invalid contract type')
+        };
+    }
 }

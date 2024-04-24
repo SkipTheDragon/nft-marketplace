@@ -31,17 +31,17 @@ final readonly class MessageSessionService
         $nonce = bin2hex(openssl_random_pseudo_bytes(16));
 
         return "
-            $appName wants you to sign in with your address:
-            $address
+$appName wants you to sign in with your address:
+$address
 
-            By signing in, you agree to the terms and conditions of $appName.
+By signing in, you agree to the terms and conditions of $appName.
 
-            URI: $appUrl
-            Version: V1.0
-            Chain ID: $chainId
-            Nonce: $nonce
-            Issued At: $issuedAt
-            Expiration Time: $expiresAt
+URI: $appUrl
+Version: V1.0
+Chain ID: $chainId
+Nonce: $nonce
+Issued At: $issuedAt
+Expiration Time: $expiresAt
         ";
     }
 

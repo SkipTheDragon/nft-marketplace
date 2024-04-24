@@ -1,7 +1,7 @@
 import {defineConfig} from 'vite'
 import symfonyPlugin from "vite-plugin-symfony";
 import viteReact from "@vitejs/plugin-react";
-import {fosRoutingPlugin} from "./assets/vite-plugins/fosRoutingPlugin";
+import fosRoutingPlugin from "./assets/vite-plugins/fosRoutingPlugin";
 
 // https://vitejs.dev/config/
 export default defineConfig({
@@ -9,7 +9,7 @@ export default defineConfig({
         viteReact(),
         symfonyPlugin(),
         fosRoutingPlugin({
-            output: true
+            verbose: true
         })
     ],
     build: {

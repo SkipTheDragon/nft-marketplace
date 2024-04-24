@@ -23,7 +23,7 @@ class AccountWallet
     private ?string $address = null;
 
     #[ORM\ManyToOne(inversedBy: 'wallets')]
-    #[ORM\JoinColumn('account_data',nullable: false)]
+    #[ORM\JoinColumn('account_data', nullable: true)]
     private ?Account $account = null;
 
     /**
