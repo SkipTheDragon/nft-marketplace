@@ -1,4 +1,4 @@
 providers = ["php", "node"]
 
 [phases.setup]
-nixPkgs = ["typescript","composer"]
+nixPkgs = ["typescript","nix-shell -p php82Packages.composer"]
