@@ -1,4 +1,4 @@
-providers = ["node", "php"]
+providers = ["php", "node"]
 
 [phases.setup]
 nixPkgs = ["typescript"]
