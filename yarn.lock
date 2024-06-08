@@ -2443,9 +2443,7 @@
     zod "^3.22.4"
 
 "@thirdweb-dev/sdk@^4.0.62":
-  version "4.0.62"
-  resolved "https://registry.yarnpkg.com/@thirdweb-dev/sdk/-/sdk-4.0.62.tgz#f113edc8c2c4a04dff087d3a5db3244eb046f46d"
-  integrity sha512-vl2WifKYb5WaGWPhpUifIzRJmjspdGtSrzhqh6lmiuGiO0h24Zr13/WH5RY3CrMDzM+C1SeMc+pO92POtW9orw==
+  version "4.0.92"
   dependencies:
     "@eth-optimism/sdk" "3.3.0"
     "@thirdweb-dev/chains" "0.1.93"
