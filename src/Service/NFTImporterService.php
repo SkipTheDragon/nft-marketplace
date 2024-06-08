@@ -127,25 +127,27 @@ readonly class NFTImporterService
         $currentContract = $contract->at($contractAddress);
 
         // Get all tokens
-
         $currentContract->call($this->mappedContractDataToTokenType[$contractType]['supply'], function ($err, $result) use (&$totalSupply) {
             $totalSupply = intval($result[0]->toString());
         });
 
         /**
-         * If contract type is edition, add 1 to total supply
+         * If contract function contains next in name that means we will get the next token to be minted starting from
+         * index 0, add 1 to total supply to show the real quantity.
          */
-        if ($contractType === ENFTTypes::EDITION->value) {
+        if (str_contains($this->mappedContractDataToTokenType[$contractType]['supply'], 'next')) {
             $totalSupply += 1;
         }
-
+        // TODO: check for existing tokens in db
+        // TODO: Split nfts into successful and failed retrieves from blockchain and import them all at once with a single transaction
         // Get all token uris
         for ($i = 0; $i < $totalSupply; $i++) {
+            // TODO: Add batch calls
             $currentContract->call($this->mappedContractDataToTokenType[$contractType]['uri'], $i, function ($err, $result) use (&$metadataUri) {
                 $metadataUri = $result[0];
             });
 
-            if(empty($metadataUri)) { // TODO: handle import error
+            if (empty($metadataUri)) { // TODO: handle import error
                 continue;
             }
 
