@@ -7895,9 +7895,7 @@ viem@2.9.9:
     ws "8.13.0"
 
 vite-plugin-symfony@^6.4.3:
-  version "6.4.3"
-  resolved "https://registry.yarnpkg.com/vite-plugin-symfony/-/vite-plugin-symfony-6.4.3.tgz#6066fcef8140dc970a383a1b4e781704abc45a67"
-  integrity sha512-eWW5/tCaorNfce6aoWxHOeEUsA1zDIyb80M/sIvPtKz9uZDlCepFBJMTbKJ1+OGIrUnm/JOYBXwamGQlScAsvg==
+  version "6.4.7"
   dependencies:
     debug "^4.3.4"
     fast-glob "^3.3.2"
