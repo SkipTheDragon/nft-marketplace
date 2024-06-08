@@ -1116,9 +1116,7 @@
     qs "^6.9.0"
 
 "@inertiajs/react@^1.0.15":
-  version "1.0.15"
-  resolved "https://registry.yarnpkg.com/@inertiajs/react/-/react-1.0.15.tgz#f44deb52362a2841ceafe10bd51b1c66fe7cf620"
-  integrity sha512-T+eDD8Yz5FZ3Qbd0xKXbfRNSrZAQP6o2+jKv7Jakyzjr8ZLdcIpXmevqlGGo5Tc3/ZLzHAX4+2fzpyEKtfonng==
+  version "1.1.0"
   dependencies:
     "@inertiajs/core" "1.0.15"
     lodash.isequal "^4.5.0"
