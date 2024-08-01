@@ -3,7 +3,7 @@
 name: nft-marketplace
 recipe: symfony
 config:
-  webroot: ./public
+  webroot: ./webapp/public
   php: '8.2'
   via: nginx
   cache: memcached
@@ -21,15 +21,29 @@ services:
       - composer install
     build_as_root:
       - apt-get update -y
-      - apt-get install -y libgmp-dev
+      - curl -sL https://deb.nodesource.com/setup_20.x | bash -
+      - apt-get install -y libgmp-dev librabbitmq-dev nodejs
       - docker-php-ext-install gmp
       - docker-php-ext-enable gmp
-      - curl -sL https://deb.nodesource.com/setup_20.x | bash -
-      - apt-get install -y nodejs
+      - docker-php-ext-install sockets
+      - docker-php-ext-enable sockets
+      - printf "\n" | pecl install amqp
       - npm install yarn -g
   database:
     portforward: 5432
-
+  rabbitmq:
+    api: 3
+    type: lando
+    services:
+      image: rabbitmq:3.13-management
+      command: rabbitmq-server
+      volumes:
+        - rabbitmq_volume:/var/lib/rabbitmq
+      environment:
+         RABBITMQ_DEFAULT_USER: user
+         RABBITMQ_DEFAULT_PASS: password
+    volumes:
+      rabbitmq_volume: {}
 tooling:
   node:
     service: appserver
@@ -41,3 +55,6 @@ tooling:
     service: appserver
     description: Shortcut for php bin/console
     cmd: php bin/console
+proxy:
+  rabbitmq:
+    - rabbit.lndo.site:15672
